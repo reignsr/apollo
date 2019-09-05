@@ -393,9 +393,9 @@ public class NamespaceService {
       return lastItem != null;
     }
     
-    // Fixed by shuangrui at 2019/9/4
+    // Fixed by shuangrui at 2019/9/5
     Map<String, String> publishedConfiguration = gson.fromJson(latestRelease.getConfigurations(), GsonType.CONFIG);
-    List<Item> itemsNew = itemService.findItemsWithOrdered(namespaceId);
+    List<Item> itemsNew = itemService.findItemsKeyNonEmpty(namespaceId);
     if (publishedConfiguration.size() != itemsNew.size()) {
       // Added or Deleted items
       return true;
