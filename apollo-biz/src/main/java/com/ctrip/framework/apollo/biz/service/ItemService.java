@@ -121,6 +121,15 @@ public class ItemService {
       return Collections.emptyList();
     }
   }
+  
+  // Add by shuangrui at 2019/9/5
+  public List<Item> findItemsKeyNonEmpty(Long namespaceId) {
+    List<Item> items = itemRepository.findByNamespaceIdAndKeyNot(namespaceId, "");
+    if (items == null) {
+      return Collections.emptyList();
+    }
+    return items;
+  }
 
   public List<Item> findItemsModifiedAfterDate(long namespaceId, Date date) {
     return itemRepository.findByNamespaceIdAndDataChangeLastModifiedTimeGreaterThan(namespaceId, date);
