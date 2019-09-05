@@ -12,6 +12,9 @@ import java.util.List;
 public interface ItemRepository extends PagingAndSortingRepository<Item, Long> {
 
   Item findByNamespaceIdAndKey(Long namespaceId, String key);
+  
+  // Add by shuangrui at 2019/9/5
+  List<Item> findByNamespaceIdAndKeyNot(Long namespaceId, String key);
 
   List<Item> findByNamespaceIdOrderByLineNumAsc(Long namespaceId);
 
