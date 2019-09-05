@@ -392,16 +392,20 @@ public class NamespaceService {
       Item lastItem = itemService.findLastOne(namespaceId);
       return lastItem != null;
     }
-
-    Date lastPublishTime = latestRelease.getDataChangeLastModifiedTime();
-    List<Item> itemsModifiedAfterLastPublish = itemService.findItemsModifiedAfterDate(namespaceId, lastPublishTime);
-
-    if (CollectionUtils.isEmpty(itemsModifiedAfterLastPublish)) {
-      return false;
-    }
-
+    
+    // Fixed by shuangrui at 2019/9/4
     Map<String, String> publishedConfiguration = gson.fromJson(latestRelease.getConfigurations(), GsonType.CONFIG);
-    for (Item item : itemsModifiedAfterLastPublish) {
+    List<Item> itemsNew = itemService.findItemsWithOrdered(namespaceId);
+    if (publishedConfiguration.size() != itemsNew.size()) {
+      // Added or Deleted items
+      return true;
+    }
+    /**
+     * Size equals scene:
+     * 1. Only Modified items
+     * 2. Added one and Deleted one at the same time
+     */
+    for (Item item : itemsNew) {
       if (!Objects.equals(item.getValue(), publishedConfiguration.get(item.getKey()))) {
         return true;
       }
